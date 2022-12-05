@@ -76,14 +76,16 @@ def readCsv(inf_,outf_,deff_): #will need to receive input csv and def file
 # https://en.wikipedia.org/wiki/Quicken_Interchange_Format
 #
 def writeFile(date_,amount_,memo_,payee_, filelocation_):
-    outFile = open(filelocation_,"a")  #Open file to be appended
-    outFile.write("!Type:Cash\n")  #Header of transaction, Currently all set to cash
+    outFile = open(filelocation_,"a")  # open file and append.
+    # outFile.write("!Type:Cash\n")  #Header of transaction, Currently all set to cash
+    outFile.write("!Type:CCard\n")  #Header of transaction, Currently all set to cash.  #todo: should be in def file.
     outFile.write("D")  #Date line starts with the capital D
     outFile.write(date_)
     outFile.write("\n")
 
     outFile.write("T")  #Transaction amount starts here
-    outFile.write(amount_)
+    amt = float(amount_)*-1; # since credit card, need to negate amount, #todo this should also be in the def file.
+    outFile.write(str(amt)) 
     outFile.write("\n")
 
     outFile.write("M")  #Memo Line
@@ -116,7 +118,7 @@ def convert():
          exit(1)
 
      try:
-         tofile   = open(sys.argv[2],'a')
+         tofile   = open(sys.argv[2],'w') # open file in write mode, not append.
      except:
          print '\nInput error!____ output.csv: ' + sys.argv[2] + ' cannot be created !!\n'
          exit(1)
